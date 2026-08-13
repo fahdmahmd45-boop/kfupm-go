@@ -87,18 +87,29 @@ export default function MapView({
 
     for (const location of locations) {
       const meta = CATEGORY_META[location.category];
-      const el = document.createElement("button");
-      el.setAttribute("aria-label", location.name);
-      el.className = "campus-marker";
-      el.style.setProperty("--marker-color", meta.color);
-      if (location.id === selectedLocationId) el.classList.add("campus-marker--selected");
 
-      el.addEventListener("click", (e) => {
+      // IMPORTANT: Mapbox GL positions markers by writing its own `transform`
+      // directly onto the element passed to `new mapboxgl.Marker({ element })`.
+      // If we also put our rotate/animation transform on that same element,
+      // Mapbox's positioning transform overwrites ours and the marker can
+      // render invisible or mis-shapen. Fix: use a plain anchor element for
+      // Mapbox to position, and put all visual styling on a child element.
+      const anchorEl = document.createElement("button");
+      anchorEl.setAttribute("aria-label", location.name);
+      anchorEl.className = "campus-marker-anchor";
+
+      const pinEl = document.createElement("span");
+      pinEl.className = "campus-marker";
+      pinEl.style.setProperty("--marker-color", meta.color);
+      if (location.id === selectedLocationId) pinEl.classList.add("campus-marker--selected");
+      anchorEl.appendChild(pinEl);
+
+      anchorEl.addEventListener("click", (e) => {
         e.stopPropagation();
         onSelectLocation(location);
       });
 
-      const marker = new mapboxgl.Marker({ element: el, anchor: "bottom" })
+      const marker = new mapboxgl.Marker({ element: anchorEl, anchor: "bottom" })
         .setLngLat([location.longitude, location.latitude])
         .addTo(map);
 
@@ -121,9 +132,12 @@ export default function MapView({
     const lngLat: [number, number] = [geolocation.longitude, geolocation.latitude];
 
     if (!userMarkerRef.current) {
-      const el = document.createElement("div");
-      el.className = "user-location-dot";
-      userMarkerRef.current = new mapboxgl.Marker({ element: el, anchor: "center" }).setLngLat(lngLat).addTo(map);
+      const anchorEl = document.createElement("div");
+      anchorEl.className = "user-location-anchor";
+      const dotEl = document.createElement("div");
+      dotEl.className = "user-location-dot";
+      anchorEl.appendChild(dotEl);
+      userMarkerRef.current = new mapboxgl.Marker({ element: anchorEl, anchor: "center" }).setLngLat(lngLat).addTo(map);
     } else {
       userMarkerRef.current.setLngLat(lngLat);
     }
