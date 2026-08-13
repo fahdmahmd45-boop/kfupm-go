@@ -1,45 +1,52 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-    --background: #f5f1e8;
-    --foreground: #2b2620;
+  --background: #f5f1e8;
+  --foreground: #2b2620;
+}
+
+.dark {
+  --background: #14110d;
+  --foreground: #f1ede4;
 }
 
 @theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-sans);
-    overscroll-behavior: none;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overscroll-behavior: none;
 }
 
 /* Structural RTL support: set dir="rtl" on <html> (or a container) to mirror
    the layout. The app defaults to English/LTR for the MVP. */
 [dir="rtl"] {
-    text-align: right;
+  text-align: right;
 }
 
 /* Campus location marker */
 @keyframes marker-drop {
-    from {
-          opacity: 0;
-          transform: rotate(-45deg) translateY(-14px) scale(0.6);
-    }
-    to {
-          opacity: 1;
-          transform: rotate(-45deg) translateY(0) scale(1);
-    }
+  from {
+    opacity: 0;
+    transform: rotate(-45deg) translateY(-14px) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-45deg) translateY(0) scale(1);
+  }
 }
 
 /* Mapbox writes its own positioning `transform` directly onto the element
@@ -48,111 +55,111 @@ body {
    (rotation, color, drop animation) lives on the child .campus-marker pin
    instead, so Mapbox's positioning never gets clobbered. */
 .campus-marker-anchor {
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .campus-marker {
-    display: block;
-    width: 30px;
-    height: 30px;
-    border-radius: 9999px 9999px 9999px 0;
-    transform: rotate(-45deg);
-    background: var(--marker-color, #007E40);
-    border: 2.5px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-    position: relative;
-    transition: transform 0.15s ease;
-    animation: marker-drop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px 9999px 9999px 0;
+  transform: rotate(-45deg);
+  background: var(--marker-color, #007E40);
+  border: 2.5px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  position: relative;
+  transition: transform 0.15s ease;
+  animation: marker-drop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .campus-marker-anchor:active .campus-marker {
-    transform: rotate(-45deg) scale(0.9);
+  transform: rotate(-45deg) scale(0.9);
 }
 
 .campus-marker::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 9px;
-    height: 9px;
-    border-radius: 9999px;
-    background: white;
-    transform: translate(-50%, -50%) rotate(45deg);
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: white;
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .campus-marker--selected {
-    transform: rotate(-45deg) scale(1.25);
-    z-index: 10;
+  transform: rotate(-45deg) scale(1.25);
+  z-index: 10;
 }
 
 /* User's live location dot */
 @keyframes pulse-ring {
-    0% {
-          box-shadow: 0 0 0 0 rgba(0, 126, 64, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-    70% {
-          box-shadow: 0 0 0 10px rgba(0, 126, 64, 0), 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-    100% {
-          box-shadow: 0 0 0 0 rgba(0, 126, 64, 0), 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 126, 64, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 126, 64, 0), 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 126, 64, 0), 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
 }
 
 /* Same rule as marker-anchor above: keep the Mapbox-positioned element free
    of our own transform/animation. */
 .user-location-anchor {
-    width: 18px;
-    height: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .user-location-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 9999px;
-    background: #007E40;
-    border: 3px solid white;
-    animation: pulse-ring 2s ease-out infinite;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #007E40;
+  border: 3px solid white;
+  animation: pulse-ring 2s ease-out infinite;
 }
 
 /* Bottom sheet slide-up */
 @keyframes sheet-slide-up {
-    from {
-          opacity: 0;
-          transform: translateY(16px);
-    }
-    to {
-          opacity: 1;
-          transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .sheet-animate {
-    animation: sheet-slide-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: sheet-slide-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Fade-in for search results / panels */
 @keyframes panel-fade-in {
-    from {
-          opacity: 0;
-          transform: translateY(-6px);
-    }
-    to {
-          opacity: 1;
-          transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .panel-animate {
-    animation: panel-fade-in 0.2s ease-out both;
+  animation: panel-fade-in 0.2s ease-out both;
 }
 
 /* Mapbox attribution should stay tappable but unobtrusive on mobile */
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 }

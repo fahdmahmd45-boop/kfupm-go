@@ -30,13 +30,13 @@ export default function ExplorePage() {
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col">
       <header className="px-5 pb-3 pt-[calc(env(safe-area-inset-top)+16px)]">
-        <h1 className="text-2xl font-bold text-neutral-900">Explore</h1>
-        <p className="mt-0.5 text-sm text-neutral-500">Campus highlights and guides.</p>
+        <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">Explore</h1>
+        <p className="mt-0.5 text-sm text-neutral-500 dark:text-neutral-400">Campus highlights and guides.</p>
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-4">
         <div className="mb-6">
-          <h2 className="mb-2 flex items-center gap-1.5 text-sm font-bold text-neutral-800">
+          <h2 className="mb-2 flex items-center gap-1.5 text-sm font-bold text-neutral-800 dark:text-neutral-200">
             <CalendarDays className="h-4 w-4" />
             Where events happen
           </h2>
@@ -45,25 +45,25 @@ export default function ExplorePage() {
               <li key={spot.id}>
                 <Link
                   href="/"
-                  className="block rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/5 active:bg-neutral-50"
+                  className="block rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/5 active:bg-neutral-50 dark:bg-neutral-800 dark:ring-white/10 dark:active:bg-neutral-700/60"
                 >
-                  <p className="text-[15px] font-semibold text-neutral-900">{spot.name}</p>
-                  <p className="mt-0.5 text-xs text-neutral-500">{spot.note}</p>
+                  <p className="text-[15px] font-semibold text-neutral-900 dark:text-white">{spot.name}</p>
+                  <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">{spot.note}</p>
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="flex flex-col items-center pt-6 text-center text-neutral-400">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-neutral-100">
+        <div className="flex flex-col items-center pt-6 text-center text-neutral-400 dark:text-neutral-500">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
             <Compass className="h-7 w-7" />
           </span>
-          <p className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-neutral-600">
+          <p className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-neutral-600 dark:text-neutral-300">
             <Sparkles className="h-4 w-4" />
             More to explore soon
           </p>
-          <p className="mt-1 max-w-[260px] text-xs text-neutral-400">
+          <p className="mt-1 max-w-[260px] text-xs text-neutral-400 dark:text-neutral-500">
             Full event listings with dates and reminders, shuttle info, dining highlights, and curated campus guides
             are planned for a future release.
           </p>

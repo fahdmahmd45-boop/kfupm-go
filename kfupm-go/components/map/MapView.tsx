@@ -5,10 +5,13 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { CampusLocation, GeolocationState, RouteSummary } from "@/types/location";
 import { CATEGORY_META } from "@/lib/categories";
-import { CAMPUS_CENTER } from "@/data/locations";
+import { CAMPUS_CENTER, CAMPUS_BOUNDARY } from "@/data/locations";
 
 const ROUTE_SOURCE_ID = "walking-route";
 const ROUTE_LAYER_ID = "walking-route-line";
+const BOUNDARY_SOURCE_ID = "campus-boundary";
+const BOUNDARY_FILL_LAYER_ID = "campus-boundary-fill";
+const BOUNDARY_LINE_LAYER_ID = "campus-boundary-line";
 
 interface MapViewProps {
   locations: CampusLocation[];
@@ -55,6 +58,28 @@ export default function MapView({
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
 
     map.on("load", () => {
+      map.addSource(BOUNDARY_SOURCE_ID, {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: { type: "Polygon", coordinates: [CAMPUS_BOUNDARY] },
+        },
+      });
+      map.addLayer({
+        id: BOUNDARY_FILL_LAYER_ID,
+        type: "fill",
+        source: BOUNDARY_SOURCE_ID,
+        paint: { "fill-color": "#007E40", "fill-opacity": 0.06 },
+      });
+      map.addLayer({
+        id: BOUNDARY_LINE_LAYER_ID,
+        type: "line",
+        source: BOUNDARY_SOURCE_ID,
+        layout: { "line-join": "round", "line-cap": "round" },
+        paint: { "line-color": "#007E40", "line-width": 2, "line-dasharray": [2, 2], "line-opacity": 0.85 },
+      });
+
       map.addSource(ROUTE_SOURCE_ID, {
         type: "geojson",
         data: { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [] } },

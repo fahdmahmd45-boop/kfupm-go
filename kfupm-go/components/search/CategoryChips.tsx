@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, UtensilsCrossed, SquareParking, Landmark, BookOpen, Wrench, Users, type LucideIcon } from "lucide-react";
+import { Building2, UtensilsCrossed, SquareParking, Landmark, BookOpen, Wrench, Users, Bus, type LucideIcon } from "lucide-react";
 import { CATEGORY_META, QUICK_CATEGORIES } from "@/lib/categories";
 import type { LocationCategory } from "@/types/location";
 
@@ -12,6 +12,7 @@ const ICONS: Record<string, LucideIcon> = {
   BookOpen,
   Wrench,
   Users,
+  Bus,
 };
 
 interface CategoryChipsProps {
@@ -32,8 +33,8 @@ export default function CategoryChips({ activeCategory, onSelect }: CategoryChip
             onClick={() => onSelect(active ? null : category)}
             className={`flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-semibold shadow-sm ring-1 transition-all active:scale-95 ${
               active
-                ? "bg-neutral-900 text-white ring-neutral-900"
-                : "bg-white/95 text-neutral-700 ring-black/5 backdrop-blur"
+                ? "bg-neutral-900 text-white ring-neutral-900 dark:bg-white dark:text-neutral-900 dark:ring-white"
+                : "bg-white/95 text-neutral-700 ring-black/5 backdrop-blur dark:bg-neutral-800/95 dark:text-neutral-200 dark:ring-white/10"
             }`}
           >
             <Icon className="h-3.5 w-3.5" style={{ color: active ? "white" : meta.color }} />

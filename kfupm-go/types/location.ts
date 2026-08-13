@@ -6,6 +6,7 @@ export type LocationCategory =
   | "study"
   | "service"
   | "club"
+  | "transit"
   | "other";
 
 export interface LocationEntrance {
@@ -31,6 +32,8 @@ export interface CampusLocation {
   phone?: string;
   rating?: number;
   hours?: string[];
+  /** Optional photo, relative to /public (e.g. "/photos/kfupm-tower.jpg"). */
+  photo?: string;
   /**
    * MVP data flag. All seed locations are placeholders until verified
    * KFUPM coordinates are supplied — see data/locations.ts.

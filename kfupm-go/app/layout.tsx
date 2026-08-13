@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="flex h-full min-h-full flex-col overflow-hidden bg-neutral-50 text-neutral-900">
+      <body className="flex h-full min-h-full flex-col overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
         {children}
       </body>
     </html>

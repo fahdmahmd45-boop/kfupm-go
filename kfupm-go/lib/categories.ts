@@ -8,6 +8,7 @@ export const CATEGORY_META: Record<LocationCategory, CategoryMeta> = {
   study: { id: "study", label: "Study", color: "#7c3aed", icon: "BookOpen" },
   service: { id: "service", label: "Services", color: "#0891b2", icon: "Wrench" },
   club: { id: "club", label: "Clubs", color: "#facc15", icon: "Users" },
+  transit: { id: "transit", label: "Bus Stops", color: "#2563eb", icon: "Bus" },
   other: { id: "other", label: "Other", color: "#71717a", icon: "MapPin" },
 };
 
@@ -19,4 +20,5 @@ export const QUICK_CATEGORIES: LocationCategory[] = [
   "study",
   "service",
   "club",
+  "transit",
 ];
