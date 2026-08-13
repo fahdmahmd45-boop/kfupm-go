@@ -1,11 +1,9 @@
 "use client";
-
-import Image from "next/image";
 import { Heart, Navigation, X, Star, Phone, Clock } from "lucide-react";
+import { useState } from "react";
 import type { CampusLocation, GeolocationState } from "@/types/location";
 import { CATEGORY_META } from "@/lib/categories";
 import { distanceMeters, estimateWalkingSeconds, formatDistance, formatDuration, getRoutingTarget } from "@/lib/geo";
-
 interface LocationSheetProps {
   location: CampusLocation;
   geolocation: GeolocationState;
@@ -15,7 +13,6 @@ interface LocationSheetProps {
   onClose: () => void;
   isNavigating: boolean;
 }
-
 export default function LocationSheet({
   location,
   geolocation,
@@ -27,7 +24,7 @@ export default function LocationSheet({
 }: LocationSheetProps) {
   const meta = CATEGORY_META[location.category];
   const target = getRoutingTarget(location);
-
+  const [photoFailed, setPhotoFailed] = useState(false);
   let estimate: { distance: string; duration: string } | null = null;
   if (geolocation.status === "granted") {
     const meters = distanceMeters(geolocation, target);
@@ -36,17 +33,25 @@ export default function LocationSheet({
       duration: formatDuration(estimateWalkingSeconds(meters)),
     };
   }
-
   return (
     <div className="rounded-t-3xl bg-white px-5 pb-[calc(env(safe-area-inset-bottom)+16px)] pt-3 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] sheet-animate dark:bg-neutral-800">
       <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-neutral-200 dark:bg-neutral-600" />
-
-      {location.photo && (
-        <div className="relative -mx-5 mb-3 h-36 w-[calc(100%+2.5rem)] overflow-hidden">
-          <Image src={location.photo} alt={location.name} fill className="object-cover" sizes="480px" />
+      {location.photo && !photoFailed && (
+        <div className="relative -mx-5 mb-3 h-36 w-[calc(100%+2.5rem)] overflow-hidden bg-neutral-100 dark:bg-neutral-700">
+          {/* Plain <img> (not next/image) with an error fallback: several photos
+              are hotlinked from third-party sources we can't verify stay live,
+              so a broken link should quietly hide the photo, not show a
+              broken-image icon. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={location.photo}
+            alt={location.name}
+            className="h-full w-full object-cover"
+            loading="lazy"
+            onError={() => setPhotoFailed(true)}
+          />
         </div>
       )}
-
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
@@ -65,7 +70,6 @@ export default function LocationSheet({
             <p className="mt-0.5 line-clamp-2 text-sm text-neutral-500 dark:text-neutral-400">{location.description}</p>
           )}
         </div>
-
         <div className="flex shrink-0 items-center gap-1">
           <button
             aria-label={isFavorite ? "Remove from saved" : "Save location"}
@@ -79,13 +83,11 @@ export default function LocationSheet({
           </button>
         </div>
       </div>
-
       {estimate && (
         <p className="mt-3 text-sm font-medium text-neutral-600 dark:text-neutral-300">
           <span className="font-bold text-neutral-900 dark:text-white">{estimate.duration}</span> walk · {estimate.distance}
         </p>
       )}
-
       {(location.rating || location.phone || location.hours) && (
         <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3 dark:border-white/10">
           {location.rating && (
@@ -108,7 +110,6 @@ export default function LocationSheet({
           )}
         </div>
       )}
-
       <button
         onClick={onStartWalking}
         disabled={geolocation.status !== "granted" || isNavigating}
